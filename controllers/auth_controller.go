@@ -69,16 +69,40 @@ func (uc *AuthController) Login(ctx *gin.Context) {
 		ResponseWithFailMsg(ctx, CodeServerBusy, err.Error())
 		return
 	}
-	claims, err := utils.ParseJWTToken(token)
-	if err != nil {
-		ResponseWithFailMsg(ctx, CodeServerBusy, err.Error())
-		return
-	}
-	time := claims.ExpiresAt.Time
 	ResponseWithSuccess(ctx, gin.H{
 		"token":        token,
 		"refreshToken": refreshToken,
-		"expireAt":     time.Format("2006-01-02 15:04:05"),
 		"userInfo":     dbUser,
+	})
+}
+
+func (uc *AuthController) RefreshToken(ctx *gin.Context) {
+	value, exists := ctx.Get("userInfo")
+	if !exists {
+		ResponseWithUnAuthorized(ctx)
+		return
+	}
+	claims, ok := value.(*utils.CustomClaims)
+	if !ok {
+		ResponseWithUnAuthorized(ctx)
+		return
+	}
+
+	err := claims.Valid()
+	if err != nil {
+		ResponseWithUnAuthorized(ctx)
+	}
+	user := &models.User{UserId: claims.UserId, Username: claims.Username}
+	token, err := utils.GenerateAccessToken(user)
+	if err != nil {
+		ResponseWithFailMsg(ctx, CodeServerBusy, err.Error())
+	}
+	refreshToken, err := utils.GenerateRefreshToken(user)
+	if err != nil {
+		ResponseWithFailMsg(ctx, CodeServerBusy, err.Error())
+	}
+	ResponseWithSuccess(ctx, gin.H{
+		"token":        token,
+		"refreshToken": refreshToken,
 	})
 }

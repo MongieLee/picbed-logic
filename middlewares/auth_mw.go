@@ -21,11 +21,7 @@ func AuthMiddleware(c *gin.Context) {
 	token := authHeader[len("Bearer "):]
 	claims, err := utils.ParseJWTToken(token)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, controllers.ResponseData{
-			Code: controllers.CodeUnauthorized,
-			Msg:  controllers.CodeUnauthorized.Msg(),
-			Data: nil,
-		})
+		controllers.ResponseWithUnAuthorized(c)
 		c.Abort()
 		return
 	}

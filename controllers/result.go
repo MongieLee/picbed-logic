@@ -42,3 +42,11 @@ func ResponseWithSuccessMsg(c *gin.Context, msg string, data interface{}) {
 		Data: data,
 	})
 }
+
+func ResponseWithUnAuthorized(c *gin.Context) {
+	c.JSON(http.StatusUnauthorized, ResponseData{
+		Code: CodeUnauthorized,
+		Msg:  CodeUnauthorized.Msg(),
+		Data: nil,
+	})
+}
