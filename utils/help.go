@@ -1,11 +1,11 @@
 package utils
 
 import (
-	"crypto/rand"
 	"encoding/base64"
 	"fmt"
 	"github.com/bwmarrin/snowflake"
 	"golang.org/x/crypto/bcrypt"
+	"golang.org/x/exp/rand"
 	"time"
 )
 
@@ -57,4 +57,16 @@ func HashPassword(password string, salt string) (string, error) {
 		return "", err
 	}
 	return string(encryptedPassword), nil
+}
+
+const Charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+// GenerateRandomChars 生成随机字符
+func GenerateRandomChars(length int) string {
+	result := make([]byte, length)
+	rand.Seed(uint64(time.Now().UnixNano()))
+	for i := range result {
+		result[i] = Charset[rand.Intn(len(Charset))]
+	}
+	return string(result)
 }

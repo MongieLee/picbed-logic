@@ -11,10 +11,12 @@ func initMiddleware(e *gin.Engine) {
 }
 
 func InitRoutes(e *gin.Engine) {
+	e.Static("/uploads", "./uploads")
 	e.NoRoute(func(c *gin.Context) {
 		controllers.ResponseWithFail(c, controllers.CodeResourceNotFound)
 	})
 	initMiddleware(e)
 	InitAuthRoute(e)
 	InitUserRoute(e)
+	InitCommonRoute(e)
 }
