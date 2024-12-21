@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"picbed/global"
 	"picbed/utils"
 	"strings"
 	"time"
@@ -24,6 +25,6 @@ func (fc *FileController) UploadFile(ctx *gin.Context) {
 	if err != nil {
 		ResponseWithFail(ctx, CodeServerError)
 	}
-	returnUrl := "http://localhost:9999/" + dst
+	returnUrl := global.ProConfig.PicbedHost + "/" + dst
 	ResponseWithSuccessMsg(ctx, "上传成功", returnUrl)
 }

@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+var ViperConfigFile string
+
 type MySqlConfig struct {
 	Hostname string `mapstructure:"hostname"`
 	Port     string `mapstructure:"port"`
@@ -15,13 +17,15 @@ type MySqlConfig struct {
 }
 
 var ProConfig struct {
-	Mysql MySqlConfig `mapstructure:"mysql"`
+	Mysql      MySqlConfig `mapstructure:"mysql"`
+	PicbedHost string      `mapstructure:"picbed_host"`
 }
 
 func InitViperConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
+	viper.SetConfigFile(ViperConfigFile)
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		err := viper.Unmarshal(&ProConfig)
 		if err != nil {

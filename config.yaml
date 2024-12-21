@@ -4,3 +4,4 @@ mysql:
   username: root
   password: bendimima
   database: picbed
+picbed_host: http://localhost:9999
