@@ -25,5 +25,9 @@ go.work.sum
 # env file
 .env
 
-uploads
-build
+uploads/
+build/
+
+.idea/
+main
+.DS_Store

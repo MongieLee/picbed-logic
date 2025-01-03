@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/zh"
@@ -8,7 +10,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	enTranslations "github.com/go-playground/validator/v10/translations/en"
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
-	"strings"
 )
 
 var Trans ut.Translator
@@ -18,27 +19,27 @@ func InitValidatorTrans(locale string) {
 		uni := ut.New(en.New(), zh.New())
 		Trans, ok = uni.GetTranslator(locale)
 		if !ok {
-			log.Print("init validator trans failed,err : %v\n", locale)
+			log.Printf("init validator trans failed,err : %v\n", locale)
 		}
 		switch locale {
 		case "zh":
 			err := zhTranslations.RegisterDefaultTranslations(validate, Trans)
 			if err != nil {
-				log.Print("init validator trans failed,err : %v\n", locale)
+				log.Printf("init validator trans failed,err : %v\n", locale)
 			}
 		case "en":
 			err := enTranslations.RegisterDefaultTranslations(validate, Trans)
 			if err != nil {
-				log.Print("init validator trans failed,err : %v\n", locale)
+				log.Printf("init validator trans failed,err : %v\n", locale)
 			}
 		default:
 			err := enTranslations.RegisterDefaultTranslations(validate, Trans)
 			if err != nil {
-				log.Print("init validator trans failed,err : %v\n", "en")
+				log.Printf("init validator trans failed,err : %v\n", "en")
 			}
 		}
 	} else {
-		log.Print("init validator trans failed,err : %v\n", locale)
+		log.Printf("init validator trans failed,err : %v\n", locale)
 	}
 }
 

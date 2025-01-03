@@ -2,12 +2,13 @@ package controllers
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"picbed/models"
 	"picbed/services"
 	"picbed/utils"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type UserController struct{}
@@ -38,7 +39,7 @@ func (uc *UserController) CreateUser(ctx *gin.Context) {
 	ResponseWithSuccess(ctx, nil)
 }
 
-// DeleteUser 删除u用户
+// DeleteUser 删除用户
 func (uc *UserController) DeleteUser(ctx *gin.Context) {
 	var params map[string]interface{}
 	if err := ctx.ShouldBindJSON(&params); err != nil {
